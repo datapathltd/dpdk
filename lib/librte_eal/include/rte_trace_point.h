@@ -5,16 +5,16 @@
 #ifndef _RTE_TRACE_POINT_H_
 #define _RTE_TRACE_POINT_H_
 
-/**
- * @file
- *
- * RTE Tracepoint API
- *
- * This file provides the tracepoint API to RTE applications.
- *
- * @warning
- * @b EXPERIMENTAL: this API may change without prior notice
- */
+ /**
+  * @file
+  *
+  * RTE Tracepoint API
+  *
+  * This file provides the tracepoint API to RTE applications.
+  *
+  * @warning
+  * @b EXPERIMENTAL: this API may change without prior notice
+  */
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,17 +31,17 @@ extern "C" {
 #include <rte_string_fns.h>
 #include <rte_uuid.h>
 
-/** The tracepoint object. */
-typedef uint64_t rte_trace_point_t;
+   /** The tracepoint object. */
+   typedef uint64_t rte_trace_point_t;
 
-/**
- * Macro to define the tracepoint arguments in RTE_TRACE_POINT macro.
+   /**
+    * Macro to define the tracepoint arguments in RTE_TRACE_POINT macro.
 
- * @see RTE_TRACE_POINT, RTE_TRACE_POINT_FP
- */
+    * @see RTE_TRACE_POINT, RTE_TRACE_POINT_FP
+    */
 #define RTE_TRACE_POINT_ARGS
 
-/** @internal Helper macro to support RTE_TRACE_POINT and RTE_TRACE_POINT_FP */
+    /** @internal Helper macro to support RTE_TRACE_POINT and RTE_TRACE_POINT_FP */
 #define __RTE_TRACE_POINT(_mode, _tp, _args, ...) \
 extern rte_trace_point_t __##_tp; \
 static __rte_always_inline void \
@@ -78,43 +78,43 @@ _tp _args \
 #define RTE_TRACE_POINT(tp, args, ...) \
 	__RTE_TRACE_POINT(generic, tp, args, __VA_ARGS__)
 
-/**
- * Create a tracepoint for fast path.
- *
- * Similar to RTE_TRACE_POINT, except that it is removed at compilation time
- * unless the RTE_ENABLE_TRACE_FP configuration parameter is set.
- *
- * @param tp
- *   Tracepoint object. Before using the tracepoint, an application needs to
- *   define the tracepoint using RTE_TRACE_POINT_REGISTER macro.
- * @param args
- *   C function style input arguments to define the arguments to tracepoint.
- *   function.
- * @param ...
- *   Define the payload of trace function. The payload will be formed using
- *   rte_trace_point_emit_* macros, Use ";" delimiter between two payloads.
- *
- * @see RTE_TRACE_POINT
- */
+ /**
+  * Create a tracepoint for fast path.
+  *
+  * Similar to RTE_TRACE_POINT, except that it is removed at compilation time
+  * unless the RTE_ENABLE_TRACE_FP configuration parameter is set.
+  *
+  * @param tp
+  *   Tracepoint object. Before using the tracepoint, an application needs to
+  *   define the tracepoint using RTE_TRACE_POINT_REGISTER macro.
+  * @param args
+  *   C function style input arguments to define the arguments to tracepoint.
+  *   function.
+  * @param ...
+  *   Define the payload of trace function. The payload will be formed using
+  *   rte_trace_point_emit_* macros, Use ";" delimiter between two payloads.
+  *
+  * @see RTE_TRACE_POINT
+  */
 #define RTE_TRACE_POINT_FP(tp, args, ...) \
 	__RTE_TRACE_POINT(fp, tp, args, __VA_ARGS__)
 
 #ifdef __DOXYGEN__
 
-/**
- * Register a tracepoint.
- *
- * @param trace
- *   The tracepoint object created using RTE_TRACE_POINT_REGISTER.
- * @param name
- *   The name of the tracepoint object.
- * @return
- *   - 0: Successfully registered the tracepoint.
- *   - <0: Failure to register the tracepoint.
- */
+  /**
+   * Register a tracepoint.
+   *
+   * @param trace
+   *   The tracepoint object created using RTE_TRACE_POINT_REGISTER.
+   * @param name
+   *   The name of the tracepoint object.
+   * @return
+   *   - 0: Successfully registered the tracepoint.
+   *   - <0: Failure to register the tracepoint.
+   */
 #define RTE_TRACE_POINT_REGISTER(trace, name)
 
-/** Tracepoint function payload for uint64_t datatype */
+   /** Tracepoint function payload for uint64_t datatype */
 #define rte_trace_point_emit_u64(val)
 /** Tracepoint function payload for int64_t datatype */
 #define rte_trace_point_emit_i64(val)
@@ -161,109 +161,109 @@ _tp _args \
  *   - 0: Success.
  *   - (-ERANGE): Trace object is not registered.
  */
-__rte_experimental
-int rte_trace_point_enable(rte_trace_point_t *tp);
+   __rte_experimental
+      int rte_trace_point_enable(rte_trace_point_t* tp);
 
-/**
- * Disable recording events of the given tracepoint in the trace buffer.
- *
- * @param tp
- *   The tracepoint object to disable.
- * @return
- *   - 0: Success.
- *   - (-ERANGE): Trace object is not registered.
- */
-__rte_experimental
-int rte_trace_point_disable(rte_trace_point_t *tp);
+   /**
+    * Disable recording events of the given tracepoint in the trace buffer.
+    *
+    * @param tp
+    *   The tracepoint object to disable.
+    * @return
+    *   - 0: Success.
+    *   - (-ERANGE): Trace object is not registered.
+    */
+   __rte_experimental
+      int rte_trace_point_disable(rte_trace_point_t* tp);
 
-/**
- * Test if recording events from the given tracepoint is enabled.
- *
- * @param tp
- *    The tracepoint object.
- * @return
- *    true if tracepoint is enabled, false otherwise.
- */
-__rte_experimental
-bool rte_trace_point_is_enabled(rte_trace_point_t *tp);
+   /**
+    * Test if recording events from the given tracepoint is enabled.
+    *
+    * @param tp
+    *    The tracepoint object.
+    * @return
+    *    true if tracepoint is enabled, false otherwise.
+    */
+   __rte_experimental
+      bool rte_trace_point_is_enabled(rte_trace_point_t* tp);
 
-/**
- * Lookup a tracepoint object from its name.
- *
- * @param name
- *   The name of the tracepoint.
- * @return
- *   The tracepoint object or NULL if not found.
- */
-__rte_experimental
-rte_trace_point_t *rte_trace_point_lookup(const char *name);
+   /**
+    * Lookup a tracepoint object from its name.
+    *
+    * @param name
+    *   The name of the tracepoint.
+    * @return
+    *   The tracepoint object or NULL if not found.
+    */
+   __rte_experimental
+      rte_trace_point_t* rte_trace_point_lookup(const char* name);
 
-/**
- * @internal
- *
- * Test if the tracepoint fast path compile-time option is enabled.
- *
- * @return
- *   true if tracepoint fast path enabled, false otherwise.
- */
-__rte_experimental
-static __rte_always_inline bool
-__rte_trace_point_fp_is_enabled(void)
-{
+   /**
+    * @internal
+    *
+    * Test if the tracepoint fast path compile-time option is enabled.
+    *
+    * @return
+    *   true if tracepoint fast path enabled, false otherwise.
+    */
+   __rte_experimental
+      static __rte_always_inline bool
+      __rte_trace_point_fp_is_enabled(void)
+   {
 #ifdef RTE_ENABLE_TRACE_FP
-	return true;
+      return true;
 #else
-	return false;
+      return false;
 #endif
-}
+   }
 
-/**
- * @internal
- *
- * Allocate trace memory buffer per thread.
- *
- */
-__rte_experimental
-void __rte_trace_mem_per_thread_alloc(void);
+   /**
+    * @internal
+    *
+    * Allocate trace memory buffer per thread.
+    *
+    */
+   __rte_experimental
+      void __rte_trace_mem_per_thread_alloc(void);
 
-/**
- * @internal
- *
- * Helper function to emit field.
- *
- * @param sz
- *   The tracepoint size.
- * @param field
- *   The name of the trace event.
- * @param type
- *   The datatype of the trace event as string.
- * @return
- *   - 0: Success.
- *   - <0: Failure.
- */
-__rte_experimental
-void __rte_trace_point_emit_field(size_t sz, const char *field,
-	const char *type);
+   /**
+    * @internal
+    *
+    * Helper function to emit field.
+    *
+    * @param sz
+    *   The tracepoint size.
+    * @param field
+    *   The name of the trace event.
+    * @param type
+    *   The datatype of the trace event as string.
+    * @return
+    *   - 0: Success.
+    *   - <0: Failure.
+    */
+   __rte_experimental
+      void __rte_trace_point_emit_field(size_t sz, const char* field,
+      const char* type);
 
-/**
- * @internal
- *
- * Helper function to register a dynamic tracepoint.
- * Use RTE_TRACE_POINT_REGISTER macro for tracepoint registration.
- *
- * @param trace
- *   The tracepoint object created using RTE_TRACE_POINT_REGISTER.
- * @param name
- *   The name of the tracepoint object.
- * @param register_fn
- *   Trace registration function.
- * @return
- *   - 0: Successfully registered the tracepoint.
- *   - <0: Failure to register the tracepoint.
- */
-__rte_experimental
-int __rte_trace_point_register(rte_trace_point_t *trace, const char *name,
-	void (*register_fn)(void));
+   /**
+    * @internal
+    *
+    * Helper function to register a dynamic tracepoint.
+    * Use RTE_TRACE_POINT_REGISTER macro for tracepoint registration.
+    *
+    * @param trace
+    *   The tracepoint object created using RTE_TRACE_POINT_REGISTER.
+    * @param name
+    *   The name of the tracepoint object.
+    * @param register_fn
+    *   Trace registration function.
+    * @return
+    *   - 0: Successfully registered the tracepoint.
+    *   - <0: Failure to register the tracepoint.
+    */
+   __rte_experimental
+      int __rte_trace_point_register(rte_trace_point_t* trace, const char* name,
+      void (*register_fn)(void));
 
 #ifndef __DOXYGEN__
 
@@ -279,68 +279,68 @@ int __rte_trace_point_register(rte_trace_point_t *trace, const char *name,
 #define __RTE_TRACE_FIELD_ENABLE_MASK (1ULL << 63)
 #define __RTE_TRACE_FIELD_ENABLE_DISCARD (1ULL << 62)
 
-struct __rte_trace_stream_header {
-	uint32_t magic;
-	rte_uuid_t uuid;
-	uint32_t lcore_id;
-	char thread_name[__RTE_TRACE_EMIT_STRING_LEN_MAX];
-} __rte_packed;
+   struct __rte_trace_stream_header {
+      uint32_t magic;
+      rte_uuid_t uuid;
+      uint32_t lcore_id;
+      char thread_name[__RTE_TRACE_EMIT_STRING_LEN_MAX];
+   } __rte_packed;
 
-struct __rte_trace_header {
-	uint32_t offset;
-	uint32_t len;
-	struct __rte_trace_stream_header stream_header;
-	uint8_t mem[];
-};
+   struct __rte_trace_header {
+      uint32_t offset;
+      uint32_t len;
+      struct __rte_trace_stream_header stream_header;
+      uint8_t mem[];
+   };
 
-RTE_DECLARE_PER_LCORE(void *, trace_mem);
+   RTE_DECLARE_PER_LCORE(void*, trace_mem);
 
-static __rte_always_inline void *
-__rte_trace_mem_get(uint64_t in)
-{
-	struct __rte_trace_header *trace = RTE_PER_LCORE(trace_mem);
-	const uint16_t sz = in & __RTE_TRACE_FIELD_SIZE_MASK;
+   static __rte_always_inline void*
+      __rte_trace_mem_get(uint64_t in)
+   {
+      struct __rte_trace_header* trace = (struct __rte_trace_header*)RTE_PER_LCORE(trace_mem);
+      const uint16_t sz = in & __RTE_TRACE_FIELD_SIZE_MASK;
 
-	/* Trace memory is not initialized for this thread */
-	if (unlikely(trace == NULL)) {
-		__rte_trace_mem_per_thread_alloc();
-		trace = RTE_PER_LCORE(trace_mem);
-		if (unlikely(trace == NULL))
-			return NULL;
-	}
-	/* Check the wrap around case */
-	uint32_t offset = trace->offset;
-	if (unlikely((offset + sz) >= trace->len)) {
-		/* Disable the trace event if it in DISCARD mode */
-		if (unlikely(in & __RTE_TRACE_FIELD_ENABLE_DISCARD))
-			return NULL;
+      /* Trace memory is not initialized for this thread */
+      if (unlikely(trace == NULL)) {
+	 __rte_trace_mem_per_thread_alloc();
+	 trace = (struct __rte_trace_header*)RTE_PER_LCORE(trace_mem);
+	 if (unlikely(trace == NULL))
+	    return NULL;
+      }
+      /* Check the wrap around case */
+      uint32_t offset = trace->offset;
+      if (unlikely((offset + sz) >= trace->len)) {
+	 /* Disable the trace event if it in DISCARD mode */
+	 if (unlikely(in & __RTE_TRACE_FIELD_ENABLE_DISCARD))
+	    return NULL;
 
-		offset = 0;
-	}
-	/* Align to event header size */
-	offset = RTE_ALIGN_CEIL(offset, __RTE_TRACE_EVENT_HEADER_SZ);
-	void *mem = RTE_PTR_ADD(&trace->mem[0], offset);
-	offset += sz;
-	trace->offset = offset;
+	 offset = 0;
+      }
+      /* Align to event header size */
+      offset = RTE_ALIGN_CEIL(offset, __RTE_TRACE_EVENT_HEADER_SZ);
+      void* mem = RTE_PTR_ADD(&trace->mem[0], offset);
+      offset += sz;
+      trace->offset = offset;
 
-	return mem;
-}
+      return mem;
+   }
 
-static __rte_always_inline void *
-__rte_trace_point_emit_ev_header(void *mem, uint64_t in)
-{
-	uint64_t val;
+   static __rte_always_inline void*
+      __rte_trace_point_emit_ev_header(void* mem, uint64_t in)
+   {
+      uint64_t val;
 
-	/* Event header [63:0] = id [63:48] | timestamp [47:0] */
-	val = rte_get_tsc_cycles() &
-		~(0xffffULL << __RTE_TRACE_EVENT_HEADER_ID_SHIFT);
-	val |= ((in & __RTE_TRACE_FIELD_ID_MASK) <<
-		(__RTE_TRACE_EVENT_HEADER_ID_SHIFT -
-		 __RTE_TRACE_FIELD_ID_SHIFT));
+      /* Event header [63:0] = id [63:48] | timestamp [47:0] */
+      val = rte_get_tsc_cycles() &
+	 ~(0xffffULL << __RTE_TRACE_EVENT_HEADER_ID_SHIFT);
+      val |= ((in & __RTE_TRACE_FIELD_ID_MASK) <<
+	 (__RTE_TRACE_EVENT_HEADER_ID_SHIFT -
+	 __RTE_TRACE_FIELD_ID_SHIFT));
 
-	*(uint64_t *)mem = val;
-	return RTE_PTR_ADD(mem, __RTE_TRACE_EVENT_HEADER_SZ);
-}
+      *(uint64_t*)mem = val;
+      return RTE_PTR_ADD(mem, __RTE_TRACE_EVENT_HEADER_SZ);
+   }
 
 #define __rte_trace_point_emit_header_generic(t) \
 void *mem; \
